@@ -1,3 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Creepster&family=Inter:wght@200;400&family=Poppins:ital,wght@0,200;0,300;0,400;0,500;0,600;1,200;1,300&family=Tektur:wght@600&display=swap');
+
+*{
+  padding: 0;
+  margin: 0;
+  box-sizing: 0;
+}
+
+body{
+  font-family: "Poppins";
+}
 .App {
   text-align: center;
 }
@@ -36,3 +47,47 @@
     transform: rotate(360deg);
   }
 }
+
+header{
+  display: flex;
+  gap: 40px;
+}
+
+.Navbar{
+  border: 1px solid red;
+  display: flex;
+  align-items: center;
+  width: 90%;
+  margin: 1.5em auto 0 auto;
+  justify-content: space-between;
+}
+.profile{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.navlinks a{
+    margin: 0 1em;
+    color: black;
+      text-decoration: none;
+      text-decoration-color: white;
+}
+
+.navlinks a:hover {
+  color: grey;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-color: rgb(181, 181, 181);
+}
+
+.navlinks a.active{
+  color: red;
+}
+.logo{
+  font-size: 2rem;
+  font-weight: 500;
+}
+
+
+
