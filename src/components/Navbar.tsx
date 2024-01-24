@@ -1,7 +1,6 @@
 import { NavLink, useNavigate,  } from "react-router-dom"
 import {auth} from '../config/firebase';
 import {useAuthState} from 'react-firebase-hooks/auth';
-
 import {signOut} from 'firebase/auth'
 
 
@@ -21,7 +20,8 @@ export function Navbar (){
         <header>
             <div className="navlinks">
                 <NavLink to= '/'>Home</NavLink>
-                <NavLink to= '/login'>Login</NavLink>
+                {!user ? <NavLink to= '/login'>Login</NavLink>: <NavLink to= '/createpost'>Create Post</NavLink>}
+                
             </div>
         
         {user && 
