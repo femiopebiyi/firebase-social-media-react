@@ -90,5 +90,64 @@ header{
   font-weight: 500;
 }
 
+.create-post {
+  border: 1px solid green;
+  margin-top: 6em;
+  display: flex;
+  justify-content: center;
+}
 
+form {
+  padding: 3em;
+  border: 1px solid blue;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 7px;
+  background-color: #282c34;
+}
 
+.title{
+  padding: 1em 2em;
+}
+
+.post-des{
+  resize: none;
+  width: 100%;
+  padding: 1em 1em;
+}
+.sucess{
+  color: darkgreen;
+}
+
+.submit{
+  display: inline-block;
+    outline: 0;
+    cursor: pointer;
+    text-align: center;
+    border: 0;
+    padding: 7px 16px;
+    min-height: 36px;
+    min-width: 36px;
+    color: #ffffff;
+    background: #008060;
+    border-radius: 4px;
+    font-weight: 500;
+    font-size: 14px;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 0px 0px, rgba(0, 0, 0, 0.2) 0px -1px 0px 0px inset;
+  
+    
+}
+form p{
+  color: white;
+}
+
+.submit:hover {
+  background: #006e52;
+}
+
+.profile-img{
+  border-radius: 50%;
+}
