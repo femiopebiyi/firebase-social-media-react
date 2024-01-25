@@ -5,6 +5,7 @@ import { addDoc, collection} from "firebase/firestore";
  import { auth, database } from "../../config/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -14,7 +15,10 @@ type CreateFormData = {
 }
 
 export function CreateForm (){
+    const navigate = useNavigate()
     let [sucess, setSucess] = useState("")
+    let [button, setButton] = useState("Post")
+
 
     const [user]= useAuthState(auth)
     const schema =yup.object().shape({
@@ -30,20 +34,38 @@ export function CreateForm (){
     const colRef = collection(database, "posts")
 
     async function onCreatePost(data: CreateFormData){
+        try{
+            setButton("Posting....")
         console.log(data)
         await addDoc(colRef, {
             title: data.title,
             description: data.description,
             username: user?.displayName,
             userId: user?.uid
-        })
-
-
-        setSucess("Post Sucessful")
+        }).then(()=>{
+            setButton("Post")
+            setSucess("Post Sucessful ✅")
         setTimeout(() => {
             setSucess("")
-        }, 1200);
-        reset()
+        }, 2000);
+            reset()
+        }).then(()=>{
+            navigate('/')
+        })
+        .catch((error)=>{
+            console.log("fff", error)
+        })
+
+        } catch(err: unknown){
+
+            if(typeof err === "object"){
+                console.log(err)
+            }
+        }
+        
+
+
+        
     }
 
     return <div className="form"> 
@@ -54,7 +76,7 @@ export function CreateForm (){
 
         <textarea placeholder="Description" {...register("description")} className="post-des"/>
         <p>{errors.description?.message}</p>
-        <input type="submit" className="submit"/>
+        <input type="submit" className="submit" value={button}/>
     </form>
 
 

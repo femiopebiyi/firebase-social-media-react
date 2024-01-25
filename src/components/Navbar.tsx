@@ -28,7 +28,7 @@ export function Navbar (){
         <div className="profile">
             <p>{user?.displayName}</p>
             <img src ={user?.photoURL ?? ''} width = "20" height = "20" alt="profile-pic" className="profile-img"/>
-            <button onClick ={signUserOut}>LogOut</button>
+            <button onClick ={signUserOut} className="logout">LogOut</button>
         </div>
 
         }
