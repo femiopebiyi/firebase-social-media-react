@@ -14,6 +14,8 @@ export interface PostsInt {
 }
 
 
+
+
 export function Main (){
     const [user]= useAuthState(auth)
 
@@ -30,10 +32,7 @@ export function Main (){
 
     
     useEffect(()=>{
-        if(user){
             getPost()
-        }
-        
     }, [])
 
     if(!user){
