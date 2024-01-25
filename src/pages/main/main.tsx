@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import {auth, database} from '../../config/firebase';
 import { getDocs, collection } from 'firebase/firestore';
 import { Posts } from './posts';
+import { useAuthState } from 'react-firebase-hooks/auth';
 
 export interface PostsInt {
     id: string
@@ -14,6 +15,11 @@ export interface PostsInt {
 
 
 export function Main (){
+    const [user]= useAuthState(auth)
+
+    
+
+
     const [postsLists, setPostLists] = useState<PostsInt[] | null>(null)
     const colRef = collection(database, "posts");
 
@@ -22,9 +28,19 @@ export function Main (){
         setPostLists(data.docs.map((doc)=>({...doc.data(), id: doc.id})) as PostsInt[])
     }
 
+    
     useEffect(()=>{
-        getPost()
+        if(user){
+            getPost()
+        }
+        
     }, [])
+
+    if(!user){
+        return <div>
+            <h1>please login</h1>
+        </div>
+    }
 
     return <div>{postsLists?.map((post, index)=> <Posts key={index} post={post}/>)}
     </div>
