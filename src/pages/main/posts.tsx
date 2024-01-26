@@ -74,9 +74,7 @@ export function Posts (props: Props){
 
         <div className="footer">
             <p>@{post.username}</p>
-            <button onClick={()=>{
-                hasUserLiked ? removeLike: addLike
-            }} style={{
+            <button onClick={hasUserLiked ? removeLike : addLike} style={{
             backgroundColor: hasUserLiked ? '#1877F2' : 'rgb(220, 220, 220)'
         }}>&#128077;</button>
 
