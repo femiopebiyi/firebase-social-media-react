@@ -26,8 +26,13 @@ export function Main (){
     const colRef = collection(database, "posts");
 
     async function getPost (){
-        const data = await getDocs(colRef)
+        try{
+            const data = await getDocs(colRef)
         setPostLists(data.docs.map((doc)=>({...doc.data(), id: doc.id})) as PostsInt[])
+        } catch(error){
+            console.log(error)
+        }
+        
     }
 
     
