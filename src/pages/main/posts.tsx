@@ -82,3 +82,4 @@ export function Posts (props: Props){
         {likes && <p>Likes: {likes.length}</p>}
     </div>
 }
+

@@ -13,7 +13,7 @@ body{
 }
 .App {
 
-  border: 1px solid blue;
+  /* border: 1px solid blue; */
 }
 
 .App-logo {
@@ -153,6 +153,7 @@ form p{
 
 .profile-img{
   border-radius: 50%;
+  cursor: pointer;
 }
 
 .logout{
@@ -220,3 +221,65 @@ form p{
 .body p{
   margin-top: 1em;
 }
+
+.profile-con{
+    border: 1px solid black;
+      margin: 2em auto 0 auto;
+      width: 90%;
+}
+
+main{
+  
+}
+.info{
+  margin-top: 3em;
+  border: 1px solid red;
+  width: 40%;
+  
+}
+
+.card{
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 2em;
+  align-items: center;
+}
+.card input{
+  width: 70%;
+  padding: .8em 0;
+}
+
+.profile-pic-con{
+  width: 200px;
+  height: 200px;
+  border: 2px solid orange;
+  margin-top: 1.5em;
+  position: relative;
+}
+
+.edit {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: none;
+}
+.profile-pic-con .profile-pic{
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+}
+
+
+.profile-pic-con:hover{
+  opacity: .5;
+
+  .edit{
+    display: block;
+  }
+}
+
+.edit svg{
+  font-size: 20px;
+}
+

@@ -1,7 +1,8 @@
 import { NavLink, useNavigate,  } from "react-router-dom"
 import {auth} from '../config/firebase';
 import {useAuthState} from 'react-firebase-hooks/auth';
-import {signOut} from 'firebase/auth'
+import {signOut} from 'firebase/auth';
+import {Button, ButtonGroup} from "@nextui-org/react";
 
 
 export function Navbar (){
@@ -27,8 +28,8 @@ export function Navbar (){
         {user && 
         <div className="profile">
             <p>{user?.displayName}</p>
-            <img src ={user?.photoURL ?? ''} width = "20" height = "20" alt="profile-pic" className="profile-img"/>
-            <button onClick ={signUserOut} className="logout">LogOut</button>
+            <img src ={user?.photoURL ?? ''} width = "20" height = "20" alt="profile-pic" className="profile-img" onClick={()=>{navigate('/profile')}}/>
+            <button onClick ={signUserOut} className="logout" >LogOut</button>
         </div>
 
         }

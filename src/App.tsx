@@ -6,6 +6,7 @@ import { Main } from './pages/main/main';
 import { Login } from './pages/login';
 import { Navbar } from './components/Navbar';
 import { CreatePost } from './pages/create-post/create-post';
+import { Profile } from './pages/Profile';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
           <Route path='/' element={<Main/>}/>
           <Route path='/login' element={<Login/>}/>
           <Route path='/createpost' element={<CreatePost/>}/>
+          <Route path='/profile' element={<Profile/>}/>
         </Routes>
       </Router>
     </div>
