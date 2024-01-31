@@ -1,9 +1,10 @@
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../config/firebase";
+import { auth, database } from "../config/firebase";
 import { FaPen } from "react-icons/fa6";
 import { useState, useEffect } from "react";
 import { storage } from "../config/firebase";
 import {ref, uploadBytes, getDownloadURL, listAll} from 'firebase/storage'
+import { addDoc, collection } from "firebase/firestore";
 
 
 
@@ -14,8 +15,11 @@ export function Profile (){
     const [downloadURL, setDownloadURL] = useState<string | null>(null);
     const imageListRef = ref(storage, `images/`)
     const [user] = useAuthState(auth)
+    const  [loading, setLoading] = useState('')
+    const detailsRef = collection(database, 'details')
 
   const handleProfileClick = () => {
+    
     // Trigger a click on the file input when the profile-pic-con div is clicked
     const fileInput = document.getElementById('fileInput') as HTMLInputElement | null;
     if (fileInput) {
@@ -24,6 +28,7 @@ export function Profile (){
   }
 
     const handleFileChange =  (event: React.ChangeEvent<HTMLInputElement>) => {
+      setLoading("Uploading......")
     // Handle file change logic here
     const selectedFile = event.target.files && event.target.files[0];
     // Do something with the selected file
@@ -41,7 +46,7 @@ export function Profile (){
     .then((url) => {
       setDownloadURL(url);
       console.log("Download URL:", url);
-      
+      setLoading("")
     })
     .catch((error) => {
       console.error("Error in the process:", error);
@@ -70,7 +75,19 @@ export function Profile (){
       console.error("Error listing images:", error);
     });
 
-
+ async function saveChanges() {
+  try{
+    addDoc(detailsRef, {
+    "full-name": user?.displayName,
+    "profile-url": downloadURL ?? user?.photoURL,
+    "user-id": user?.uid,
+    username: user?.displayName
+  })
+  } catch(err){
+    console.log(err)
+  }
+  
+ }
 
     return <div className="profile-con">
         <main>
@@ -84,9 +101,15 @@ export function Profile (){
             <img src={user?.photoURL ?? ''} alt="profile" className="profile-pic" />
           )}
           <div className='edit'><FaPen/></div>
+          <input
+            type="file"
+            id="fileInput"
+            hidden
+            onChange={handleFileChange}
+          />
         </div>
 
-            
+            <div>{loading}</div>
 
             <div className="info">
                 <div className="name card">
@@ -104,11 +127,7 @@ export function Profile (){
             </div>
         </main>
 
-          <input
-            type="file"
-            id="fileInput"
-            
-            onChange={handleFileChange}
-          />
+          
+          <button className="savechanges" onClick={saveChanges}>Save Changes</button>
     </div>
 }

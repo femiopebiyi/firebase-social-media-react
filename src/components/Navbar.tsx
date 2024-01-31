@@ -3,11 +3,12 @@ import {auth} from '../config/firebase';
 import {useAuthState} from 'react-firebase-hooks/auth';
 import {signOut} from 'firebase/auth';
 import {Button, ButtonGroup} from "@nextui-org/react";
-
+import { database } from "../config/firebase";
+import { collection, doc, query, addDoc, getDocs } from "firebase/firestore";
 
 export function Navbar (){
     const navigate = useNavigate()
-
+    const detailsRef = collection(database, 'details')
     const [user] = useAuthState(auth)
 
     const signUserOut = async ()=>{
