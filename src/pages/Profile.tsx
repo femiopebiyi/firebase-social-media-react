@@ -9,10 +9,11 @@ import {ref, uploadBytes, getDownloadURL, listAll} from 'firebase/storage'
 
 export function Profile (){
   
-    const [user] = useAuthState(auth)
+
     const [selectedImage, setSelectedImage] = useState<File | null>(null);
     const [downloadURL, setDownloadURL] = useState<string | null>(null);
     const imageListRef = ref(storage, `images/`)
+    const [user] = useAuthState(auth)
 
   const handleProfileClick = () => {
     // Trigger a click on the file input when the profile-pic-con div is clicked
@@ -22,46 +23,60 @@ export function Profile (){
     }
   }
 
-    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleFileChange =  (event: React.ChangeEvent<HTMLInputElement>) => {
     // Handle file change logic here
     const selectedFile = event.target.files && event.target.files[0];
     // Do something with the selected file
     if(selectedFile) {
-        setSelectedImage(selectedFile)
+        
 
     const imageRef = ref(storage, `images/${user?.uid}`)
-    if(selectedImage)
-    uploadBytes(imageRef, selectedImage).then((res)=>{
-        console.log("dey play my fans")
-    }).catch(()=>{
-      console.log("error contractor")
+
+      uploadBytes(imageRef, selectedFile)
+    .then((res) => {
+      console.log("Upload successful. Response:", res);
+      const ref = res.ref;
+      return getDownloadURL(ref);
     })
+    .then((url) => {
+      setDownloadURL(url);
+      console.log("Download URL:", url);
+      
+    })
+    .catch((error) => {
+      console.error("Error in the process:", error);
+    });
+
     }
+    
+    
 
   };
+  
 
   useEffect(()=>{
       listAll(imageListRef).then((res):void=>{
-        const img = res.items[0]
-        getDownloadURL(img).then((res)=>{
-          setDownloadURL(res)
-          console.log(downloadURL || 'errorcr')
-        }).catch(()=>{
-          console.log("error due to contractor")
-        })
+         res.items.forEach((item)=>{
+          if(item.name == user?.uid){
+            getDownloadURL(item).then((res)=>{
+              console.log(item.name)
+              setDownloadURL(res)
+            })
+          }
+         })
       })
   },[])
 
-    return <div className="profile-con" onClick={handleProfileClick}>
+    return <div className="profile-con">
         <main>
             <h1>My Profile</h1>
 
               <div className="profile-pic-con" onClick={handleProfileClick}>
         
           {downloadURL ? (
-            <img src ={downloadURL} alt="profile-image" className="profile-pic" />
+            <img src ={downloadURL} alt="profile" className="profile-pic" />
           ) : (
-            <img src={user?.photoURL ?? ''} alt="profile-image" className="profile-pic" />
+            <img src={user?.photoURL ?? ''} alt="profile" className="profile-pic" />
           )}
           <div className='edit'><FaPen/></div>
         </div>
@@ -87,7 +102,7 @@ export function Profile (){
           <input
             type="file"
             id="fileInput"
-            className="upload"
+            
             onChange={handleFileChange}
           />
     </div>

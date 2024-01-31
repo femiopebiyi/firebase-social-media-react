@@ -80,6 +80,7 @@ export function Posts (props: Props){
 
         </div>
         {likes && <p>Likes: {likes.length}</p>}
+        <input type="file" name="" id="" onChange={()=>{console.log('yes')}}/>
     </div>
 }
 
