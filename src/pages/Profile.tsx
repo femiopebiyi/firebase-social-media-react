@@ -10,7 +10,7 @@ import {ref, uploadBytes, getDownloadURL, listAll} from 'firebase/storage'
 export function Profile (){
   
 
-    const [selectedImage, setSelectedImage] = useState<File | null>(null);
+    
     const [downloadURL, setDownloadURL] = useState<string | null>(null);
     const imageListRef = ref(storage, `images/`)
     const [user] = useAuthState(auth)
@@ -54,18 +54,23 @@ export function Profile (){
   };
   
 
-  useEffect(()=>{
-      listAll(imageListRef).then((res):void=>{
-         res.items.forEach((item)=>{
-          if(item.name == user?.uid){
-            getDownloadURL(item).then((res)=>{
-              console.log(item.name)
-              setDownloadURL(res)
-            })
-          }
-         })
-      })
-  },[])
+
+  listAll(imageListRef)
+    .then((res) => {
+      res.items.forEach((item) => {
+        if (item.name === user?.uid) {
+          getDownloadURL(item).then((url) => {
+            console.log(item.name);
+            setDownloadURL(url);
+          });
+        }
+      });
+    })
+    .catch((error) => {
+      console.error("Error listing images:", error);
+    });
+
+
 
     return <div className="profile-con">
         <main>
