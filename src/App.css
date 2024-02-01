@@ -244,7 +244,13 @@ main{
   margin-bottom: 2em;
   align-items: center;
 }
-.card input{
+.edit-con input{
+  width: 89%;
+  padding: .8em 0;
+  border: none;
+  outline: none;
+}
+.email-in{
   width: 70%;
   padding: .8em 0;
 }
@@ -256,6 +262,7 @@ main{
   position: relative;
   border-radius: 7px;
   overflow: hidden;
+  cursor: pointer;
 }
 
 .edit {
@@ -282,5 +289,14 @@ main{
 
 .edit svg{
   font-size: 20px;
+  cursor: pointer;
+}
+.pen{
+  cursor: pointer;
+  display: inline;
 }
 
+.edit-con{
+  border: 1px solid blue;
+  width: 70%;
+}

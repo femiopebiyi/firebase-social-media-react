@@ -17,6 +17,8 @@ export function Profile (){
     const [user] = useAuthState(auth)
     const  [loading, setLoading] = useState('')
     const detailsRef = collection(database, 'details')
+    const [clickedFull, setClickedFull] = useState<boolean>(false)
+    const [clickedUser, setClickedUser] = useState<boolean>(false)
 
   const handleProfileClick = () => {
     
@@ -111,6 +113,13 @@ export function Profile (){
  }
  }
 
+ function setIsClickedFull(){
+  setClickedFull(!clickedFull)
+ }
+ function setIsClickedUser(){
+  setClickedUser(!clickedUser)
+ }
+
     return <div className="profile-con">
         <main>
             <h1>My Profile</h1>
@@ -136,15 +145,15 @@ export function Profile (){
             <div className="info">
                 <div className="name card">
                     <h4>Full Name:</h4>
-                    <input type="text" disabled value={user?.displayName ?? ''}/>
+                    <div className="edit-con"><input type="text" disabled = {clickedFull} value={user?.displayName ?? ''}/><div className = 'pen' onClick= {setIsClickedFull}><FaPen/></div></div>
                 </div>
                 <div className="username card">
                     <h4>Username:</h4>
-                    <input type="text" disabled value={user?.displayName ?? ''}/>
+                    <div className="edit-con"><input type="text" disabled={clickedUser} value={user?.displayName ?? ''}/><div className = 'pen' onClick= {setIsClickedUser}><FaPen/></div></div>
                 </div>
                 <div className="email card">
                     <h4>Email:</h4>
-                    <input type="email" disabled value={user?.email ?? ''}/>
+                    <input type="email" disabled value={user?.email ?? ''} className="email-in"/>
                 </div>
             </div>
         </main>
