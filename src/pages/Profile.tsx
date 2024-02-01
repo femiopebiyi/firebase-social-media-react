@@ -59,7 +59,7 @@ export function Profile (){
   };
   
 
-
+ useEffect(()=>{
   listAll(imageListRef)
     .then((res) => {
       res.items.forEach((item) => {
@@ -74,6 +74,8 @@ export function Profile (){
     .catch((error) => {
       console.error("Error listing images:", error);
     });
+ }, [user?.uid, downloadURL,imageListRef])
+  
 
     
 
