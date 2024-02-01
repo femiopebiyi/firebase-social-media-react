@@ -1,18 +1,24 @@
-import { auth, provider } from "../config/firebase"
-import { signInWithPopup, signOut } from "firebase/auth"
+import { auth, database, provider } from "../config/firebase"
+import { onAuthStateChanged, signInWithPopup, signOut } from "firebase/auth"
 import {FirebaseError} from 'firebase/app'
 import {useNavigate} from 'react-router-dom'
+import { addDoc, collection, query, where } from "firebase/firestore"
+import { useAuthState } from "react-firebase-hooks/auth"
 
 
 
 
 export function Login (){
     const navigate = useNavigate()
-
+    const detailsRef = collection(database, 'details')
+    const [user] = useAuthState(auth)
+    
     async function signInWithGoogle (){
         try{
             signOut(auth);
-            await signInWithPopup(auth, provider)
+            const res = await signInWithPopup(auth, provider)
+            console.log(res.user)
+            const {displayName, email, photoURL, uid} = res.user
             navigate("/")
 
         

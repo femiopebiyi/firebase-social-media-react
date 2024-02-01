@@ -4,17 +4,31 @@ import {useAuthState} from 'react-firebase-hooks/auth';
 import {signOut} from 'firebase/auth';
 import {Button, ButtonGroup} from "@nextui-org/react";
 import { database } from "../config/firebase";
-import { collection, doc, query, addDoc, getDocs } from "firebase/firestore";
+import { collection, doc, query, addDoc, getDocs, where, QueryDocumentSnapshot } from "firebase/firestore";
+import { useEffect, useState } from "react";
 
 export function Navbar (){
     const navigate = useNavigate()
     const detailsRef = collection(database, 'details')
     const [user] = useAuthState(auth)
+    const [profileURL, setProfileURL] = useState<QueryDocumentSnapshot | string>("")
+    // const detailDoc =  query(detailsRef, where('user-id', '==', user?.uid))
 
     const signUserOut = async ()=>{
         signOut(auth)
         navigate('/login')
     }
+
+    // async function getDetails(){
+        
+    //     const data = await getDocs(detailDoc)
+    //     console.log(data.docs.map((doc)=>({userId: doc.data().userId, "profile-url": doc.data()['profile-url']})))
+    // }
+
+    // useEffect(()=>{
+    //     getDetails()
+    // }, [])
+    
 
     return <div className="Navbar">
         <div className="logo">Femi</div>

@@ -4,7 +4,7 @@ import { FaPen } from "react-icons/fa6";
 import { useState, useEffect } from "react";
 import { storage } from "../config/firebase";
 import {ref, uploadBytes, getDownloadURL, listAll} from 'firebase/storage'
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, query, updateDoc, where, getDocs, doc } from "firebase/firestore";
 
 
 
@@ -67,26 +67,46 @@ export function Profile (){
           getDownloadURL(item).then((url) => {
             console.log(item.name);
             setDownloadURL(url);
-          });
+          })
         }
-      });
+      })
     })
     .catch((error) => {
       console.error("Error listing images:", error);
     });
 
+    
+
  async function saveChanges() {
+
   try{
-    addDoc(detailsRef, {
+    
+  const loggedInRef = query(detailsRef, where("user-id", '==', user?.uid ))
+  const data = await getDocs(loggedInRef)
+  const detail = data.docs.map((doc)=>({userId: doc.data()["user-id"], docId: doc.id}))
+  
+  
+  
+      if(detail.length === 0){
+    await addDoc(detailsRef, {
     "full-name": user?.displayName,
-    "profile-url": downloadURL ?? user?.photoURL,
+    "profile-url": user?.photoURL,
     "user-id": user?.uid,
     username: user?.displayName
-  })
-  } catch(err){
-    console.log(err)
+  }) 
+  } else if(detail.length === 1){
+    const {docId, userId} = detail[0]
+    const docRef = doc(database, 'details', docId)
+    await updateDoc(docRef, {
+      "full-name": user?.displayName,
+      "profile-url": downloadURL,
+      "user-id": user?.uid,
+      username: user?.displayName
+    })
   }
-  
+  } catch(err){
+  console.log(err)
+ }
  }
 
     return <div className="profile-con">
