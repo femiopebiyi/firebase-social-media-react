@@ -9,16 +9,25 @@ import { addDoc, collection, query, updateDoc, where, getDocs, doc } from "fireb
 
 
 export function Profile (){
-  
+  type Details = {
+    username: string;
+    "full-name": string;
 
-    
+  }
+
+    const [details, setDetails] = useState<Details | null>(null);
     const [downloadURL, setDownloadURL] = useState<string | null>(null);
     const imageListRef = ref(storage, `images/`)
     const [user] = useAuthState(auth)
     const  [loading, setLoading] = useState('')
-    const detailsRef = collection(database, 'details')
-    const [clickedFull, setClickedFull] = useState<boolean>(false)
-    const [clickedUser, setClickedUser] = useState<boolean>(false)
+    
+    const [clickedFull, setClickedFull] = useState<boolean>(true);
+  const [clickedUser, setClickedUser] = useState<boolean>(true);
+  
+  const [value, setValue] = useState(details?.["full-name"]);
+  const [valueUser, setValueUser] = useState(details?.username);
+
+
 
   const handleProfileClick = () => {
     
@@ -62,12 +71,13 @@ export function Profile (){
   
 
  useEffect(()=>{
+
   listAll(imageListRef)
     .then((res) => {
       res.items.forEach((item) => {
+
         if (item.name === user?.uid) {
           getDownloadURL(item).then((url) => {
-            console.log(item.name);
             setDownloadURL(url);
           })
         }
@@ -76,10 +86,14 @@ export function Profile (){
     .catch((error) => {
       console.error("Error listing images:", error);
     });
- }, [user?.uid, downloadURL,imageListRef])
-  
 
     
+    
+
+ }, [user?.uid])
+  
+
+    const detailsRef = collection(database, 'details')
 
  async function saveChanges() {
 
@@ -93,19 +107,19 @@ export function Profile (){
   
       if(detail.length === 0){
     await addDoc(detailsRef, {
-    "full-name": user?.displayName,
+    "full-name": value,
     "profile-url": user?.photoURL,
     "user-id": user?.uid,
-    username: user?.displayName
+    username: valueUser
   }) 
   } else if(detail.length === 1){
     const {docId, userId} = detail[0]
     const docRef = doc(database, 'details', docId)
     await updateDoc(docRef, {
-      "full-name": user?.displayName,
+      "full-name": value,
       "profile-url": downloadURL,
       "user-id": user?.uid,
-      username: user?.displayName
+      username: valueUser
     })
   }
   } catch(err){
@@ -114,13 +128,47 @@ export function Profile (){
  }
 
  function setIsClickedFull(){
-  setClickedFull(!clickedFull)
+  setClickedFull((prev)=> !prev)
  }
  function setIsClickedUser(){
-  setClickedUser(!clickedUser)
+  setClickedUser((prev)=> !prev)
  }
 
-    return <div className="profile-con">
+  async function loadDetails() {
+  try{
+    
+    const loggedInRef = detailsRef && query(detailsRef, where("user-id", '==', user?.uid))
+    console.log(loggedInRef)
+    const data = loggedInRef && await getDocs(loggedInRef)
+  console.log(data?.docs)
+  const detail = data?.docs.map((doc)=>({userId: doc.data()["user-id"], docId: doc.id, fullName: doc.data()["full-name"], username: doc.data().username}))
+  
+
+  if (detail && detail.length > 0) {
+        const { username, fullName } = detail[0];
+        setDetails({
+          username: username,
+          "full-name": fullName,
+        });
+        setValue(fullName)  ;
+        setValueUser(username);
+      } else{
+        setValue(user?.displayName ?? "")  ;
+        setValueUser(user?.displayName ?? "");
+      }
+
+  
+  } catch(err){
+    console.log(err)
+  }
+  
+ }
+
+
+  
+
+
+    return <div className="profile-con" onLoad={loadDetails}>
         <main>
             <h1>My Profile</h1>
 
@@ -145,11 +193,11 @@ export function Profile (){
             <div className="info">
                 <div className="name card">
                     <h4>Full Name:</h4>
-                    <div className="edit-con"><input type="text" disabled = {clickedFull} value={user?.displayName ?? ''}/><div className = 'pen' onClick= {setIsClickedFull}><FaPen/></div></div>
+                    <div className="edit-con"><input type="text" disabled = {clickedFull} value= {value} onChange={(e)=>{setValue(e.target.value)}}/><div className = 'pen' onClick= {setIsClickedFull}><FaPen/></div></div>
                 </div>
                 <div className="username card">
                     <h4>Username:</h4>
-                    <div className="edit-con"><input type="text" disabled={clickedUser} value={user?.displayName ?? ''}/><div className = 'pen' onClick= {setIsClickedUser}><FaPen/></div></div>
+                    <div className="edit-con"><input type="text" disabled={clickedUser} value={valueUser} onChange={(e)=>{setValueUser(e.target.value)}}/><div className = 'pen' onClick= {setIsClickedUser}><FaPen/></div></div>
                 </div>
                 <div className="email card">
                     <h4>Email:</h4>
@@ -159,6 +207,10 @@ export function Profile (){
         </main>
 
           
-          <button className="savechanges" onClick={saveChanges}>Save Changes</button>
+          <button className="savechanges" onClick={()=>{
+            if(value && valueUser){
+              saveChanges()
+            }
+          }}>Save Changes</button>
     </div>
 }

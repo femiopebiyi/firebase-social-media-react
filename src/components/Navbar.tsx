@@ -8,6 +8,14 @@ import { collection, doc, query, addDoc, getDocs, where, QueryDocumentSnapshot }
 import { useEffect, useState } from "react";
 
 export function Navbar (){
+  type Details = {
+    username: string;
+    "full-name": string;
+    "photo-url": string
+
+  }
+
+    const [details, setDetails] = useState<Details | null>(null);
     const navigate = useNavigate()
     const detailsRef = collection(database, 'details')
     const [user] = useAuthState(auth)
@@ -30,7 +38,32 @@ export function Navbar (){
     // }, [])
     
 
-    return <div className="Navbar">
+    async function loadDetails() {
+  try{
+    const loggedInRef = detailsRef && query(detailsRef, where("user-id", '==', user?.uid))
+    console.log(loggedInRef)
+    const data = loggedInRef && await getDocs(loggedInRef)
+  console.log(data?.docs)
+  const detail = data?.docs.map((doc)=>({userId: doc.data()["user-id"], docId: doc.id, fullName: doc.data()["full-name"], username: doc.data().username, photoUrl: doc.data()["profile-url"]}))
+
+  if (detail && detail.length > 0) {
+        const { username, fullName, photoUrl } = detail[0];
+        setDetails({
+          username: username,
+          "full-name": fullName,
+          "photo-url": photoUrl
+        });
+       
+      }
+
+      console.log(details?.["photo-url"])
+  }catch(err){
+    console.log(err)
+  }
+
+}
+
+    return <div className="Navbar" onLoad={loadDetails}>
         <div className="logo">Femi</div>
 
         <header>
@@ -42,8 +75,8 @@ export function Navbar (){
         
         {user && 
         <div className="profile">
-            <p>{user?.displayName}</p>
-            <img src ={user?.photoURL ?? ''} width = "20" height = "20" alt="profile-pic" className="profile-img" onClick={()=>{navigate('/profile')}}/>
+            <p>{details?.username || user?.displayName}</p>
+            <img src ={details?.["photo-url"] || user?.photoURL || null || undefined} width = "20" height = "20" alt="profile-pic" className="profile-img" onClick={()=>{navigate('/profile')}}/>
             <button onClick ={signUserOut} className="logout" >LogOut</button>
         </div>
 
