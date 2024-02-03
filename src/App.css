@@ -42,23 +42,17 @@ body{
   color: #61dafb;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
 header{
   display: flex;
   gap: 40px;
   align-items: center;
+  justify-content: space-between;
+  /* border: 1px solid black; */
+  width: 100%;
 }
 
 .Navbar{
-  border: 1px solid red;
+  background: lightgrey;
   display: flex;
   align-items: center;
   width: 90%;
@@ -228,12 +222,9 @@ form p{
       width: 90%;
 }
 
-main{
-  
-}
 .info{
   margin-top: 3em;
-  border: 1px solid red;
+  
   width: 40%;
   
 }
@@ -368,4 +359,75 @@ main{
 .savechanges:hover {
   transition: all .1s ease;
   box-shadow: 0 0 0 0 #fff, 0 0 0 3px #1de9b6;
+}
+
+.sign-in-con{
+
+  margin: 5em auto 0 auto;
+  width: 50%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2em;
+}
+
+.signin{
+  text-align: center;
+  padding: .7em 4em; 
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  gap: 6px;
+  min-width: 300px;
+   background: white;
+   border: 0.5px solid black;
+}
+
+.signin:hover{
+  background: #34A853;
+}
+
+#small{
+  text-align: center;
+  display: none;
+}
+
+@media screen and (max-width: 675px){
+  #small{
+  text-align: center;
+  display: block;
+}
+#big{
+  display: none;
+}
+.logout{
+  padding: 1px;
+  height: 30px;
+}
+header{
+  gap: 0;
+}
+
+.Navbar{
+  width: 98%;
+}
+ .info{
+  width: 100%;
+ }
+ .profile-con{
+  border: none;
+ }
+
+ .email-in{
+  width: 75%;
+ }
+
+ .savechanges{
+  text-align: center;
+  
+  width: 100%;
+ }
 }

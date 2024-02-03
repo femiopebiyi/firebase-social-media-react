@@ -3,7 +3,8 @@ import { onAuthStateChanged, signInWithPopup, signOut } from "firebase/auth"
 import {FirebaseError} from 'firebase/app'
 import {useNavigate} from 'react-router-dom'
 import { addDoc, collection, query, where } from "firebase/firestore"
-import { useAuthState } from "react-firebase-hooks/auth"
+import { useAuthState } from "react-firebase-hooks/auth";
+import { FcGoogle } from "react-icons/fc";
 
 
 
@@ -32,8 +33,8 @@ export function Login (){
         
     } 
 
-    return <div>
+    return <div className="sign-in-con">
         <p>Sign in with Google To continue</p>
-        <button onClick={signInWithGoogle}>Sign in With Google</button>
+        <button onClick={signInWithGoogle} className="signin"><FcGoogle/> Sign in With Google</button>
     </div>
 }

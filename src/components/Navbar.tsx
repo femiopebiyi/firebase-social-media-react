@@ -6,6 +6,7 @@ import {Button, ButtonGroup} from "@nextui-org/react";
 import { database } from "../config/firebase";
 import { collection, doc, query, addDoc, getDocs, where, QueryDocumentSnapshot } from "firebase/firestore";
 import { useEffect, useState } from "react";
+import { RxHamburgerMenu } from "react-icons/rx";
 
 export function Navbar (){
   type Details = {
@@ -27,16 +28,7 @@ export function Navbar (){
         navigate('/login')
     }
 
-    // async function getDetails(){
-        
-    //     const data = await getDocs(detailDoc)
-    //     console.log(data.docs.map((doc)=>({userId: doc.data().userId, "profile-url": doc.data()['profile-url']})))
-    // }
 
-    // useEffect(()=>{
-    //     getDetails()
-    // }, [])
-    
 
     async function loadDetails() {
   try{
@@ -64,7 +56,6 @@ export function Navbar (){
 }
 
     return <div className="Navbar" onLoad={loadDetails}>
-        <div className="logo">Femi</div>
 
         <header>
             <div className="navlinks">
@@ -73,6 +64,8 @@ export function Navbar (){
                 
             </div>
         
+        <div id='big'>PostR</div>
+
         {user && 
         <div className="profile">
             <p>{details?.username || user?.displayName}</p>
@@ -81,7 +74,10 @@ export function Navbar (){
         </div>
 
         }
+        {/* <div className= 'ham'><RxHamburgerMenu /></div> */}
         </header>
+
+        
 
     </div>
 }

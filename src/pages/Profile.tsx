@@ -45,7 +45,7 @@ export function Profile (){
     const selectedFile = event.target.files && event.target.files[0];
     // Do something with the selected file
     if(selectedFile) {
-        
+        setLoadingSave("Save Changes")
 
     const imageRef = ref(storage, `images/${user?.uid}`)
 
@@ -196,11 +196,14 @@ export function Profile (){
             <div className="info">
                 <div className="name card">
                     <h4>Full Name:</h4>
-                    <div className="edit-con"><input type="text" disabled = {clickedFull} value= {value} onChange={(e)=>{setValue(e.target.value); setLoadingSave("Save Changes")}}/><div className = 'pen' onClick= {setIsClickedFull}><FaPen/></div></div>
+                    <div className="edit-con" style={{border: !clickedFull ? '1px solid black' : 'none'}}>
+                    <input type="text" disabled = {clickedFull} value= {value} onChange={(e)=>{setValue(e.target.value); setLoadingSave("Save Changes")}}/><div className = 'pen' onClick= {setIsClickedFull}><FaPen/></div></div>
                 </div>
                 <div className="username card">
                     <h4>Username:</h4>
-                    <div className="edit-con"><input type="text" disabled={clickedUser} value={valueUser} onChange={(e)=>{setValueUser(e.target.value); setLoadingSave("Save Changes")}}/><div className = 'pen' onClick= {setIsClickedUser}><FaPen/></div></div>
+                    <div className="edit-con" style={{border: !clickedUser ? '1px solid black' : 'none'}}>
+                    <input type="text" disabled={clickedUser} value={valueUser} onChange={(e)=>{setValueUser(e.target.value); setLoadingSave("Save Changes")}}/><div className = 'pen' onClick= {setIsClickedUser}><FaPen/></div>
+                    </div>
                 </div>
                 <div className="email card">
                     <h4>Email:</h4>

@@ -13,6 +13,7 @@ function App() {
     <div className="App">
       <Router>
         <Navbar/>
+        <div id='small'>PostR</div>
         <Routes>
           <Route path='/' element={<Main/>}/>
           <Route path='/login' element={<Login/>}/>
