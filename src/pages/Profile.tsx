@@ -20,6 +20,7 @@ export function Profile (){
     const imageListRef = ref(storage, `images/`)
     const [user] = useAuthState(auth)
     const  [loading, setLoading] = useState('')
+    const  [loadingSave, setLoadingSave] = useState('Save Changes')
     
     const [clickedFull, setClickedFull] = useState<boolean>(true);
   const [clickedUser, setClickedUser] = useState<boolean>(true);
@@ -96,7 +97,7 @@ export function Profile (){
     const detailsRef = collection(database, 'details')
 
  async function saveChanges() {
-
+  setLoadingSave('Saving')
   try{
     
   const loggedInRef = query(detailsRef, where("user-id", '==', user?.uid ))
@@ -121,10 +122,12 @@ export function Profile (){
       "user-id": user?.uid,
       username: valueUser
     })
+    setLoadingSave("Saved")
   }
   } catch(err){
   console.log(err)
  }
+ 
  }
 
  function setIsClickedFull(){
@@ -193,11 +196,11 @@ export function Profile (){
             <div className="info">
                 <div className="name card">
                     <h4>Full Name:</h4>
-                    <div className="edit-con"><input type="text" disabled = {clickedFull} value= {value} onChange={(e)=>{setValue(e.target.value)}}/><div className = 'pen' onClick= {setIsClickedFull}><FaPen/></div></div>
+                    <div className="edit-con"><input type="text" disabled = {clickedFull} value= {value} onChange={(e)=>{setValue(e.target.value); setLoadingSave("Save Changes")}}/><div className = 'pen' onClick= {setIsClickedFull}><FaPen/></div></div>
                 </div>
                 <div className="username card">
                     <h4>Username:</h4>
-                    <div className="edit-con"><input type="text" disabled={clickedUser} value={valueUser} onChange={(e)=>{setValueUser(e.target.value)}}/><div className = 'pen' onClick= {setIsClickedUser}><FaPen/></div></div>
+                    <div className="edit-con"><input type="text" disabled={clickedUser} value={valueUser} onChange={(e)=>{setValueUser(e.target.value); setLoadingSave("Save Changes")}}/><div className = 'pen' onClick= {setIsClickedUser}><FaPen/></div></div>
                 </div>
                 <div className="email card">
                     <h4>Email:</h4>
@@ -211,6 +214,6 @@ export function Profile (){
             if(value && valueUser){
               saveChanges()
             }
-          }}>Save Changes</button>
+          }}>{loadingSave}</button>
     </div>
 }
