@@ -114,6 +114,7 @@ form {
   resize: none;
   width: 100%;
   padding: 1em 1em;
+  height: 200px;
 }
 .sucess{
   color: darkgreen;
@@ -147,6 +148,9 @@ form p{
 
 .profile-img{
   border-radius: 50%;
+  cursor: pointer;
+}
+.profile p{
   cursor: pointer;
 }
 
