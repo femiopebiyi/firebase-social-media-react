@@ -112,7 +112,7 @@ export function Profile (){
     "profile-url": user?.photoURL,
     "user-id": user?.uid,
     username: valueUser
-  }) 
+  }).then(()=>{window.location.reload()})
   } else if(detail.length === 1){
     const {docId, userId} = detail[0]
     const docRef = doc(database, 'details', docId)
@@ -121,7 +121,7 @@ export function Profile (){
       "profile-url": downloadURL,
       "user-id": user?.uid,
       username: valueUser
-    })
+    }).then(()=>{window.location.reload()})
     setLoadingSave("Saved")
   }
   } catch(err){
@@ -168,7 +168,7 @@ export function Profile (){
  }
 
 
-  
+  const [error, setError] = useState("")
 
 
     return <div className="profile-con" onLoad={loadDetails}>
@@ -203,6 +203,7 @@ export function Profile (){
                     <h4>Username:</h4>
                     <div className="edit-con" style={{border: !clickedUser ? '1px solid black' : 'none'}}>
                     <input type="text" disabled={clickedUser} value={valueUser} onChange={(e)=>{setValueUser(e.target.value); setLoadingSave("Save Changes")}}/><div className = 'pen' onClick= {setIsClickedUser}><FaPen/></div>
+                    <p>{error}</p>
                     </div>
                 </div>
                 <div className="email card">
@@ -214,9 +215,18 @@ export function Profile (){
 
           
           <button className="savechanges" onClick={()=>{
-            if(value && valueUser){
+            if(!value?.trim() || !valueUser?.trim()){
+              setError("dont leave any input empty")
+            } else if (valueUser.length < 3){
+              setError("username should be more than 3 char")
+            } else if (valueUser.length > 8 ){
+              setError("username should be less than 8 char")
+            } else{
               saveChanges()
             }
+
+            
+          
           }}>{loadingSave}</button>
     </div>
 }

@@ -60,15 +60,15 @@ export function Navbar (){
         <header>
             <div className="navlinks">
                 <NavLink to= '/'>Home</NavLink>
-                {!user ? <NavLink to= '/login'>Login</NavLink>: <NavLink to= '/createpost'>Create Post</NavLink>}
+                {!user ? <NavLink to= '/login'>Login</NavLink>: <NavLink to= '/createpost'>Post</NavLink>}
                 
             </div>
         
-        <div id='big'>PostR</div>
+
 
         {user && 
         <div className="profile">
-            <p>{details?.username || user?.displayName}</p>
+            <p onClick = {()=>{navigate("/profile")}}>{details?.username || user?.displayName}</p>
             <img src ={details?.["photo-url"] || user?.photoURL || null || undefined} width = "20" height = "20" alt="profile-pic" className="profile-img" onClick={()=>{navigate('/profile')}}/>
             <button onClick ={signUserOut} className="logout" >LogOut</button>
         </div>
