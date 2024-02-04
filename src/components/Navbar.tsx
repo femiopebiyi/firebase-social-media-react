@@ -21,7 +21,7 @@ export function Navbar (){
     const detailsRef = collection(database, 'details')
     const [user] = useAuthState(auth)
     const [profileURL, setProfileURL] = useState<QueryDocumentSnapshot | string>("")
-    // const detailDoc =  query(detailsRef, where('user-id', '==', user?.uid))
+    // const detailDoc =  query(detailsRef, where('userId', '==', user?.uid))
 
     const signUserOut = async ()=>{
         signOut(auth)
@@ -32,11 +32,11 @@ export function Navbar (){
 
     async function loadDetails() {
   try{
-    const loggedInRef = detailsRef && query(detailsRef, where("user-id", '==', user?.uid))
+    const loggedInRef = detailsRef && query(detailsRef, where("userId", '==', user?.uid))
     console.log(loggedInRef)
     const data = loggedInRef && await getDocs(loggedInRef)
   console.log(data?.docs)
-  const detail = data?.docs.map((doc)=>({userId: doc.data()["user-id"], docId: doc.id, fullName: doc.data()["full-name"], username: doc.data().username, photoUrl: doc.data()["profile-url"]}))
+  const detail = data?.docs.map((doc)=>({userId: doc.data()["userId"], docId: doc.id, fullName: doc.data()["full-name"], username: doc.data().username, photoUrl: doc.data()["profile-url"]}))
 
   if (detail && detail.length > 0) {
         const { username, fullName, photoUrl } = detail[0];

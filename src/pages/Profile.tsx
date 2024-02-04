@@ -100,9 +100,9 @@ export function Profile (){
   setLoadingSave('Saving')
   try{
     
-  const loggedInRef = query(detailsRef, where("user-id", '==', user?.uid ))
+  const loggedInRef = query(detailsRef, where("userId", '==', user?.uid ))
   const data = await getDocs(loggedInRef)
-  const detail = data.docs.map((doc)=>({userId: doc.data()["user-id"], docId: doc.id}))
+  const detail = data.docs.map((doc)=>({userId: doc.data()["userId"], docId: doc.id}))
   
   
   
@@ -110,7 +110,7 @@ export function Profile (){
     await addDoc(detailsRef, {
     "full-name": value,
     "profile-url": user?.photoURL,
-    "user-id": user?.uid,
+    "userId": user?.uid,
     username: valueUser
   }).then(()=>{window.location.reload()})
   } else if(detail.length === 1){
@@ -119,7 +119,7 @@ export function Profile (){
     await updateDoc(docRef, {
       "full-name": value,
       "profile-url": downloadURL,
-      "user-id": user?.uid,
+      "userId": user?.uid,
       username: valueUser
     }).then(()=>{window.location.reload()})
     setLoadingSave("Saved")
@@ -140,11 +140,11 @@ export function Profile (){
   async function loadDetails() {
   try{
     
-    const loggedInRef = detailsRef && query(detailsRef, where("user-id", '==', user?.uid))
+    const loggedInRef = detailsRef && query(detailsRef, where("userId", '==', user?.uid))
     console.log(loggedInRef)
     const data = loggedInRef && await getDocs(loggedInRef)
   console.log(data?.docs)
-  const detail = data?.docs.map((doc)=>({userId: doc.data()["user-id"], docId: doc.id, fullName: doc.data()["full-name"], username: doc.data().username}))
+  const detail = data?.docs.map((doc)=>({userId: doc.data()["userId"], docId: doc.id, fullName: doc.data()["full-name"], username: doc.data().username}))
   
 
   if (detail && detail.length > 0) {
