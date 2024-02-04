@@ -4,6 +4,7 @@ import {auth, database} from '../../config/firebase';
 import { getDocs, collection } from 'firebase/firestore';
 import { Posts } from './posts';
 import { useAuthState } from 'react-firebase-hooks/auth';
+import { NavLink, useNavigate,  } from "react-router-dom"
 
 export interface PostsInt {
     id: string
@@ -19,7 +20,8 @@ export interface PostsInt {
 export function Main (){
     const [user]= useAuthState(auth)
 
-    
+        const navigate = useNavigate()
+        
 
 
     const [postsLists, setPostLists] = useState<PostsInt[] | null>(null)
@@ -42,7 +44,8 @@ export function Main (){
 
     if(!user){
         return <div>
-            <h1>please login</h1>
+            <div>{postsLists?.map((post, index)=> <Posts key={index} post={post}/>)}
+    </div>
         </div>
     }
 

@@ -3,6 +3,7 @@ import { PostsInt } from "./main"
 import { auth, database } from "../../config/firebase"
 import { useAuthState } from "react-firebase-hooks/auth"
 import { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
 
 interface Props{
     
@@ -15,6 +16,7 @@ interface Like {
 }
 
 export function Posts (props: Props){
+    const navigate = useNavigate()
     const {post} = props
     const [user] = useAuthState(auth)
     const [likes, setLikes] = useState<Like[] | null>(null)
@@ -74,7 +76,10 @@ export function Posts (props: Props){
 
         <div className="footer">
             <p>@{post.username}</p>
-            <button onClick={hasUserLiked ? removeLike : addLike} style={{
+            <button onClick={()=>{
+                hasUserLiked ? removeLike() : addLike();
+                !user && navigate("/login")
+            }} style={{
             backgroundColor: hasUserLiked ? '#1877F2' : 'rgb(220, 220, 220)'
         }}>&#128077;</button>
 
