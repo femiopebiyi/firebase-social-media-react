@@ -1,7 +1,7 @@
 import {useForm} from "react-hook-form"
 import * as yup from 'yup'
 import {yupResolver} from '@hookform/resolvers/yup'
-import { addDoc, collection} from "firebase/firestore";
+import { addDoc, collection, serverTimestamp} from "firebase/firestore";
  import { auth, database } from "../../config/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useState } from "react";
@@ -22,7 +22,7 @@ export function CreateForm (){
 
     const [user]= useAuthState(auth)
     const schema =yup.object().shape({
-        title: yup.string().required('You must add a title'),
+        title: yup.string().required('You must add a title').max(30, 'Title is 20 Char max'),
         description: yup.string().required('add a descripition'),
     })
 
@@ -41,7 +41,8 @@ export function CreateForm (){
             title: data.title,
             description: data.description,
             username: user?.displayName,
-            userId: user?.uid
+            userId: user?.uid,
+            time: serverTimestamp()
         }).then(()=>{
             setButton("Post")
             setSucess("Post Sucessful ✅")

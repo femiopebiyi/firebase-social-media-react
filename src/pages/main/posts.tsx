@@ -1,9 +1,9 @@
-import { addDoc, collection, getDocs, query, where, deleteDoc, doc} from "firebase/firestore"
+import { addDoc, collection, getDocs, query, where, deleteDoc, doc, getDoc} from "firebase/firestore"
 import { PostsInt } from "./main"
 import { auth, database } from "../../config/firebase"
 import { useAuthState } from "react-firebase-hooks/auth"
 import { useEffect, useState } from "react"
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 
 interface Props{
     
@@ -20,9 +20,11 @@ export function Posts (props: Props){
     const {post} = props
     const [user] = useAuthState(auth)
     const [likes, setLikes] = useState<Like[] | null>(null)
+    const [profileId, setProfileId] = useState<string | null>(null)
 
     const likesRef = collection(database, "likes");
     const likesDoc = query(likesRef, where('postId', '==', post.id));
+
 
     const addLike = async () => {
         try{
@@ -63,11 +65,30 @@ export function Posts (props: Props){
         }
         
     }
+    const {nanoseconds} = post.time
+    const timestamp = post.time.toDate()
+
+    const year = timestamp.getFullYear()
+    const month = timestamp.getMonth() + 1; // Months are zero-indexed
+    const day = timestamp.getDate();
+
+    const hours = timestamp.getHours();
+    const minutes = timestamp.getMinutes();
+    const seconds = timestamp.getSeconds();
+
+
+    const formattedDate = `${day < 10 ? '0' : ''}${day}-${month < 10 ? '0' : ''}${month}-${year}`;
+    const formattedTime = `${hours < 10 ? '0' : ''}${hours}:${minutes < 10 ? '0' : ''}${minutes}`;
+
+
+
+
 
 
     return <div className='post-con'>
         <div className="post-title">
             <h2>{post.title}</h2>
+            <p><em>{formattedDate},  {formattedTime}</em></p>
         </div>
 
         <div className="body">
@@ -75,7 +96,7 @@ export function Posts (props: Props){
         </div>
 
         <div className="footer">
-            <p>@{post.username}</p>
+        <p className="post-username"><Link to={user?.uid === post.userId ? `/profile/${post.userId}` : `/${post.userId}`}>@{post.username}</Link></p>
             <button onClick={()=>{
                 hasUserLiked ? removeLike() : addLike();
                 !user && navigate("/login")

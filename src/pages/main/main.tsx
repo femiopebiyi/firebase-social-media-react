@@ -1,7 +1,7 @@
 
 import { useEffect, useState } from 'react';
 import {auth, database} from '../../config/firebase';
-import { getDocs, collection } from 'firebase/firestore';
+import { getDocs, collection, Timestamp } from 'firebase/firestore';
 import { Posts } from './posts';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { NavLink, useNavigate,  } from "react-router-dom"
@@ -12,6 +12,7 @@ export interface PostsInt {
     title: string,
     username: string,
     description: string
+    time: Timestamp
 }
 
 

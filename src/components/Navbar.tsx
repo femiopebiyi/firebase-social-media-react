@@ -68,8 +68,8 @@ export function Navbar (){
 
         {user && 
         <div className="profile">
-            <p onClick = {()=>{navigate("/profile")}}>{details?.username || user?.displayName}</p>
-            <img src ={details?.["photo-url"] || user?.photoURL || null || undefined} width = "20" height = "20" alt="profile-pic" className="profile-img" onClick={()=>{navigate('/profile')}}/>
+            <p onClick = {()=>{navigate(`/profile/${user?.uid}`)}}>{details?.username || user?.displayName}</p>
+            <img src ={details?.["photo-url"] || user?.photoURL || null || undefined} width = "20" height = "20" alt="profile-pic" className="profile-img" onClick={()=>{navigate(`/profile/${user?.uid}`)}}/>
             <button onClick ={signUserOut} className="logout" >LogOut</button>
         </div>
 

@@ -9,12 +9,13 @@ import {useParams} from 'react-router-dom'
 
 
 
-export function Profile (){
+export function ProfileInd (){
   type Details = {
     username: string;
     "full-name": string;
 
   }
+
 
 
 
@@ -33,46 +34,9 @@ export function Profile (){
 
 
 
-  const handleProfileClick = () => {
-    
-    // Trigger a click on the file input when the profile-pic-con div is clicked
-    const fileInput = document.getElementById('fileInput') as HTMLInputElement | null;
-    if (fileInput) {
-      fileInput.click();
-    }
-  }
 
-    const handleFileChange =  (event: React.ChangeEvent<HTMLInputElement>) => {
-      setLoading("Uploading......")
-    // Handle file change logic here
-    const selectedFile = event.target.files && event.target.files[0];
-    // Do something with the selected file
-    if(selectedFile) {
-        setLoadingSave("Save Changes")
 
-    const imageRef = ref(storage, `images/${user?.uid}`)
-
-      uploadBytes(imageRef, selectedFile)
-    .then((res) => {
-      console.log("Upload successful. Response:", res);
-      const ref = res.ref;
-      return getDownloadURL(ref);
-    })
-    .then((url) => {
-      setDownloadURL(url);
-      console.log("Download URL:", url);
-      setLoading("")
-    })
-    .catch((error) => {
-      console.error("Error in the process:", error);
-    });
-
-    }
-    
-    
-
-  };
-  
+  const { userId } = useParams();
 
  useEffect(()=>{
 
@@ -80,7 +44,7 @@ export function Profile (){
     .then((res) => {
       res.items.forEach((item) => {
 
-        if (item.name === user?.uid) {
+        if (item.name === userId) {
           getDownloadURL(item).then((url) => {
             setDownloadURL(url);
           })
@@ -140,13 +104,16 @@ export function Profile (){
   setClickedUser((prev)=> !prev)
  }
 
+
+      console.log(userId)
+
   async function loadDetails() {
   try{
-    
-    const loggedInRef = detailsRef && query(detailsRef, where("userId", '==', user?.uid))
+
+    const loggedInRef = detailsRef && query(detailsRef, where("userId", '==', userId))
     console.log(loggedInRef)
     const data = loggedInRef && await getDocs(loggedInRef)
-  console.log(data?.docs)
+    console.log(data?.docs)
   const detail = data?.docs.map((doc)=>({userId: doc.data()["userId"], docId: doc.id, fullName: doc.data()["full-name"], username: doc.data().username}))
   
 
@@ -171,26 +138,26 @@ export function Profile (){
  }
 
 
-  const [error, setError] = useState("")
+
 
 
     return <div className="profile-con" onLoad={loadDetails}>
         <main>
-            <h1>My Profile</h1>
+            <h1>Profile</h1>
 
-              <div className="profile-pic-con" onClick={handleProfileClick}>
+              <div className="profile-pic-con">
         
           {downloadURL ? (
             <img src ={downloadURL} alt="profile" className="profile-pic" />
           ) : (
-            <img src={user?.photoURL ?? ''} alt="profile" className="profile-pic" />
+            <img src= "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png" alt="profile" className="profile-pic" />
           )}
           <div className='edit'><FaPen/></div>
           <input
             type="file"
             id="fileInput"
             hidden
-            onChange={handleFileChange}
+            
           />
         </div>
 
@@ -200,24 +167,24 @@ export function Profile (){
                 <div className="name card">
                     <h4>Full Name:</h4>
                     <div className="edit-con" style={{border: !clickedFull ? '1px solid black' : 'none'}}>
-                    <input type="text" disabled = {clickedFull} value= {value} onChange={(e)=>{setValue(e.target.value); setLoadingSave("Save Changes")}}/><div className = 'pen' onClick= {setIsClickedFull}><FaPen/></div></div>
+                    <input type="text" disabled = {clickedFull} value= {value} onChange={(e)=>{setValue(e.target.value); setLoadingSave("Save Changes")}}/></div>
                 </div>
                 <div className="username card">
                     <h4>Username:</h4>
                     <div className="edit-con" style={{border: !clickedUser ? '1px solid black' : 'none'}}>
-                    <input type="text" disabled={clickedUser} value={valueUser} onChange={(e)=>{setValueUser(e.target.value); setLoadingSave("Save Changes")}}/><div className = 'pen' onClick= {setIsClickedUser}><FaPen/></div>
-                    <p>{error}</p>
+                    <input type="text" disabled={clickedUser} value={valueUser} onChange={(e)=>{setValueUser(e.target.value); setLoadingSave("Save Changes")}}/>
+                    
                     </div>
                 </div>
-                <div className="email card">
+                {/* <div className="email card">
                     <h4>Email:</h4>
                     <input type="email" disabled value={user?.email ?? ''} className="email-in"/>
-                </div>
+                </div> */}
             </div>
         </main>
 
           
-          <button className="savechanges" onClick={()=>{
+          {/* <button className="savechanges" onClick={()=>{
             if(!value?.trim() || !valueUser?.trim()){
               setError("dont leave any input empty")
             } else if (valueUser.length < 3){
@@ -230,6 +197,6 @@ export function Profile (){
 
             
           
-          }}>{loadingSave}</button>
+          }}>{loadingSave}</button> */}
     </div>
 }
