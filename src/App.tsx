@@ -10,12 +10,13 @@ import { Profile } from './pages/Profile';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from './config/firebase';
 import { ProfileInd } from './pages/IndiProfile';
-
+import { FaReact } from "react-icons/fa";
 
 function App() {
   const [user]= useAuthState(auth)
   return (
     <div className="App">
+      <div className= 'logo'><FaReact /></div>
       <Router>
         <Navbar/>
         <Routes>
