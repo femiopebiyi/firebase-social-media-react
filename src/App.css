@@ -55,7 +55,7 @@ header{
   display: flex;
   align-items: center;
   width: 90%;
-  margin: 1.5em auto 0 auto;
+  margin: .5em auto 0 auto;
   justify-content: space-between;
 }
 .profile{
@@ -85,7 +85,7 @@ header{
   width: 100%;
   display: flex;
   justify-content: center;
-  margin-top: .4em;
+  margin-top: .3em;
   font-size: 2rem;
 
 }
