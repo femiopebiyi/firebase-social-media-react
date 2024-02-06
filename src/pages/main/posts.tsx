@@ -8,7 +8,7 @@ import { More } from "../../components/More"
 
 
 interface Props{
-    
+    getPost: ()=>  Promise<void>
     post: PostsInt
 }
 
@@ -19,7 +19,7 @@ interface Like {
 
 export function Posts (props: Props){
     const navigate = useNavigate()
-    const {post} = props
+    const {post, getPost} = props
     const [user] = useAuthState(auth)
     const [likes, setLikes] = useState<Like[] | null>(null)
     const [profileId, setProfileId] = useState<string | null>(null)
@@ -89,7 +89,7 @@ export function Posts (props: Props){
 
     return <div className='post-con'>
         <div className="post-title">
-            <h2>{post.title} <More/></h2>
+            <h2>{post.title} <More getPost = {getPost} postId = {post.id} userId = {post.userId}/></h2>
             <p><em>{formattedDate},  {formattedTime}</em></p>
         </div>
 

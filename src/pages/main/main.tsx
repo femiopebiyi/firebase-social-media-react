@@ -13,6 +13,7 @@ export interface PostsInt {
     username: string,
     description: string
     time: Timestamp
+    getPost: ()=>  Promise<void>
 }
 
 
@@ -45,11 +46,11 @@ export function Main (){
 
     if(!user){
         return <div>
-            <div>{postsLists?.map((post, index)=> <Posts key={index} post={post}/>)}
+            <div>{postsLists?.map((post, index)=> <Posts key={index} post={post} getPost={getPost}/>)}
     </div>
         </div>
     }
 
-    return <div>{postsLists?.map((post, index)=> <Posts key={index} post={post}/>)}
+    return <div>{postsLists?.map((post, index)=> <Posts key={index} post={post} getPost = {getPost}/>)}
     </div>
 }
