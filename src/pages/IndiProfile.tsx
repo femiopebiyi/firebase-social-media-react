@@ -167,12 +167,12 @@ export function ProfileInd (){
                 <div className="name card">
                     <h4>Full Name:</h4>
                     <div className="edit-con" style={{border: !clickedFull ? '1px solid black' : 'none'}}>
-                    <input type="text" disabled = {clickedFull} value= {value} onChange={(e)=>{setValue(e.target.value); setLoadingSave("Save Changes")}}/></div>
+                    <input type="text" disabled = {clickedFull} value= {value || 'not set'} onChange={(e)=>{setValue(e.target.value); setLoadingSave("Save Changes")}}/></div>
                 </div>
                 <div className="username card">
                     <h4>Username:</h4>
                     <div className="edit-con" style={{border: !clickedUser ? '1px solid black' : 'none'}}>
-                    <input type="text" disabled={clickedUser} value={valueUser} onChange={(e)=>{setValueUser(e.target.value); setLoadingSave("Save Changes")}}/>
+                    <input type="text" disabled={clickedUser} value={valueUser || 'not set'} onChange={(e)=>{setValueUser(e.target.value); setLoadingSave("Save Changes")}}/>
                     
                     </div>
                 </div>
