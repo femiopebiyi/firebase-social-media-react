@@ -4,6 +4,8 @@ import { auth, database } from "../../config/firebase"
 import { useAuthState } from "react-firebase-hooks/auth"
 import { useEffect, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
+import { More } from "../../components/More"
+
 
 interface Props{
     
@@ -87,7 +89,7 @@ export function Posts (props: Props){
 
     return <div className='post-con'>
         <div className="post-title">
-            <h2>{post.title}</h2>
+            <h2>{post.title} <More/></h2>
             <p><em>{formattedDate},  {formattedTime}</em></p>
         </div>
 

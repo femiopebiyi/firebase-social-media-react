@@ -195,6 +195,9 @@ form p{
   font-family: "Montserrat", serif;
   font-weight: 600;
   font-size: 1.8rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 
 
 }
@@ -410,40 +413,112 @@ form p{
   cursor: pointer;
 }
 
-@media screen and (max-width: 675px){
-  #small{
-  text-align: center;
-  display: block;
-}
-#big{
-  display: none;
-}
-.logout{
-  padding: 1px;
-  height: 39px;
-}
-header{
-  gap: 0;
+
+
+.more-con{
+
+  text-align: end;
+  display: inline-block;
+  position: relative;
 }
 
-.Navbar{
-  width: 99%;
+.more-details{
+  position: absolute;
+  top: 30px;
+  right: 60px;
+
+  width: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.4ms ease-in-out;
+
 }
- .info{
-  width: 100%;
- }
- .profile-con{
-  border: none;
- }
 
- .email-in{
-  width: 75%;
- }
+.more-details .delete{
+  display: inline-block;
+    outline: none;
+    cursor: pointer;
 
- .savechanges{
-  text-align: center;
+    padding: 0 12px;
+    line-height: 20px;
+
+    background: none;
+    font-weight: 700;
+    border: 0;
+    border-radius: 0;
+    color: #D92736;
+    transition-timing-function: ease-in-out;
+    transition-property: background;
+    transition-duration: 150ms;
+    box-shadow: none;
   
-  width: 100%;
- }
+    
+}
+.more-details .delete:hover {
+  background: #F7F9FD;
 }
 
+.more-details .profile, .more-details .about{
+  display: inline-block;
+    outline: none;
+    cursor: pointer;
+    border-radius: 3px;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 16px;
+    padding: 2px 16px;
+    
+    min-width: 60px;
+    min-height: 32px;
+    border: none;
+    color: #fff;
+    background-color: #4f545c;
+    transition: background-color .17s ease, color .17s ease;
+}
+
+
+
+@media screen and (max-width: 675px) {
+  #small {
+    text-align: center;
+    display: block;
+  }
+
+  #big {
+    display: none;
+  }
+
+  .logout {
+    padding: 1px;
+    height: 39px;
+  }
+
+  header {
+    gap: 0;
+  }
+
+  .Navbar {
+    width: 99%;
+  }
+
+  .info {
+    width: 100%;
+  }
+
+  .profile-con {
+    border: none;
+  }
+
+  .email-in {
+    width: 75%;
+  }
+
+  .savechanges {
+    text-align: center;
+
+    width: 100%;
+  }
+}
