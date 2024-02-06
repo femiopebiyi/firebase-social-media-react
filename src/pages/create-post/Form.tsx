@@ -22,7 +22,7 @@ export function CreateForm (){
 
     const [user]= useAuthState(auth)
     const schema =yup.object().shape({
-        title: yup.string().required('You must add a title').max(30, 'Title is 20 Char max'),
+        title: yup.string().required('You must add a title').max(25, 'Title is 20 Char max'),
         description: yup.string().required('add a descripition'),
     })
 
@@ -75,7 +75,9 @@ export function CreateForm (){
 
     <p>{errors.title?.message}</p>
 
-        <textarea placeholder="Description" {...register("description")} className="post-des"/>
+        <textarea placeholder="Description" {...register("description")} className="post-des" onKeyUp ={(e)=>{
+            e.key === "Enter" && handleSubmit(onCreatePost)()
+        }}/>
         <p>{errors.description?.message}</p>
         <input type="submit" className="submit" value={button}/>
     </form>
