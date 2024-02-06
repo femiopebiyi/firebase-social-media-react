@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { PiDotsThreeOutlineDuotone } from "react-icons/pi";
+import { NavLink } from "react-router-dom";
 
 
 
@@ -14,8 +15,8 @@ const [more, setMore] = useState<boolean>(false)
                 display: !more ? "none" : "flex"
             }}>
                 <button className="delete">Delete</button>
-                <button className="profile">Profile</button>
-                <button className="about">About</button>
+                <NavLink to = '#' className="profile">Profile</NavLink>
+                <NavLink to = '#' className="about">About</NavLink>
             </div>
         </div>
 }

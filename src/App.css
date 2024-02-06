@@ -434,7 +434,10 @@ form p{
   align-items: center;
   gap: 10px;
   transition: all 0.4ms ease-in-out;
-
+  border: 0.5px solid black;
+  padding: .4em 0;
+  z-index: 1;
+  background-color: lightgrey;
 }
 
 .more-details .delete{
@@ -462,21 +465,19 @@ form p{
 }
 
 .more-details .profile, .more-details .about{
-  display: inline-block;
-    outline: none;
-    cursor: pointer;
-    border-radius: 3px;
-    font-size: 14px;
-    font-weight: 500;
-    line-height: 16px;
-    padding: 2px 16px;
-    
-    min-width: 60px;
-    min-height: 32px;
-    border: none;
-    color: #fff;
-    background-color: #4f545c;
-    transition: background-color .17s ease, color .17s ease;
+  width: 100%;
+  text-align: center;
+  font-size: 1rem;
+  display: flex;
+  justify-content: center;
+  color: #000;
+  text-decoration: none;
+}
+
+.more-details .profile:hover,
+.more-details .about:hover{
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 
@@ -521,4 +522,9 @@ form p{
 
     width: 100%;
   }
+
+    .more-details {
+      top: 30px;
+      right: 33px;
+    }
 }
