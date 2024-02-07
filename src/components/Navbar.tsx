@@ -1,5 +1,5 @@
 import { NavLink, useNavigate,  } from "react-router-dom"
-import {auth} from '../config/firebase';
+import {auth, storage} from '../config/firebase';
 import {useAuthState} from 'react-firebase-hooks/auth';
 import {signOut} from 'firebase/auth';
 import {Button, ButtonGroup} from "@nextui-org/react";
@@ -7,6 +7,7 @@ import { database } from "../config/firebase";
 import { collection, doc, query, addDoc, getDocs, where, QueryDocumentSnapshot } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { RxHamburgerMenu } from "react-icons/rx";
+import { getDownloadURL, listAll, ref } from "firebase/storage";
 
 export function Navbar (){
   type Details = {
@@ -22,6 +23,8 @@ export function Navbar (){
     const [user] = useAuthState(auth)
     const [profileURL, setProfileURL] = useState<QueryDocumentSnapshot | string>("")
     // const detailDoc =  query(detailsRef, where('userId', '==', user?.uid))
+    const imageListRef = ref(storage, `images/`)
+    const [downloadURL, setDownloadURL] = useState<string | null>(null);
 
     const signUserOut = async ()=>{
         signOut(auth)
@@ -54,6 +57,27 @@ export function Navbar (){
   }
 
 }
+ useEffect(()=>{
+
+  listAll(imageListRef)
+    .then((res) => {
+      res.items.forEach((item) => {
+
+        if (item.name === user?.uid) {
+          getDownloadURL(item).then((url) => {
+            setDownloadURL(url);
+          })
+        }
+      })
+    })
+    .catch((error) => {
+      console.error("Error listing images:", error);
+    });
+
+    
+    
+
+ }, [user?.uid])
 
     return <div className="Navbar" onLoad={loadDetails}>
 
@@ -69,7 +93,7 @@ export function Navbar (){
         {user && 
         <div className="profile">
             <p onClick = {()=>{navigate(`/profile/${user?.uid}`)}}>{details?.username || user?.displayName}</p>
-            <img src ={details?.["photo-url"] || user?.photoURL || null || undefined} width = "20" height = "20" alt="profile-pic" className="profile-img" onClick={()=>{navigate(`/profile/${user?.uid}`)}}/>
+            <img src ={downloadURL || user?.photoURL || null || undefined} width = "20" height = "20" alt="profile-pic" className="profile-img" onClick={()=>{navigate(`/profile/${user?.uid}`)}}/>
             <button onClick ={signUserOut} className="logout" >LogOut</button>
         </div>
 
