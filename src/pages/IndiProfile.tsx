@@ -31,6 +31,7 @@ export function ProfileInd (){
   
   const [value, setValue] = useState(details?.["full-name"]);
   const [valueUser, setValueUser] = useState(details?.username);
+  const [altnames, SetAltnames] = useState("")
 
 
 
@@ -63,38 +64,16 @@ export function ProfileInd (){
 
     const detailsRef = collection(database, 'details')
 
- async function saveChanges() {
-  setLoadingSave('Saving')
-  try{
-    
-  const loggedInRef = query(detailsRef, where("userId", '==', user?.uid ))
-  const data = await getDocs(loggedInRef)
-  const detail = data.docs.map((doc)=>({userId: doc.data()["userId"], docId: doc.id}))
-  
-  
-  
-      if(detail.length === 0){
-    await addDoc(detailsRef, {
-    "full-name": value,
-    "profile-url": user?.photoURL,
-    "userId": user?.uid,
-    username: valueUser
-  }).then(()=>{window.location.reload()})
-  } else if(detail.length === 1){
-    const {docId, userId} = detail[0]
-    const docRef = doc(database, 'details', docId)
-    await updateDoc(docRef, {
-      "full-name": value,
-      "profile-url": downloadURL,
-      "userId": user?.uid,
-      username: valueUser
-    }).then(()=>{window.location.reload()})
-    setLoadingSave("Saved")
-  }
-  } catch(err){
-  console.log(err)
- }
- 
+    const postRef = collection(database,"posts")
+
+ async function loadOtherNames(){
+  const altNameQuery = query(postRef, where("userId", "==", userId))
+  const altNameRef = await getDocs(altNameQuery)
+  const altnames = altNameRef.docs.map((doc)=>({usernames: doc.data().username, likeId: doc.id}))
+
+  const {usernames} = altnames[0]
+  SetAltnames(usernames)
+
  }
 
  function setIsClickedFull(){
@@ -126,8 +105,8 @@ export function ProfileInd (){
         setValue(fullName)  ;
         setValueUser(username);
       } else{
-        setValue(user?.displayName ?? "")  ;
-        setValueUser(user?.displayName ?? "");
+        setValue(altnames ?? "")  ;
+        setValueUser(altnames ?? "");
       }
 
   
@@ -137,11 +116,16 @@ export function ProfileInd (){
   
  }
 
+useEffect(()=>{
+  loadDetails()
+},[])
 
 
 
-
-    return <div className="profile-con" onLoad={loadDetails}>
+    return <div className="profile-con" onLoad={()=>{
+      loadOtherNames()
+      loadDetails()
+    }}>
         <main>
             <h1>Profile</h1>
 
@@ -167,12 +151,12 @@ export function ProfileInd (){
                 <div className="name card">
                     <h4>Full Name:</h4>
                     <div className="edit-con" style={{border: !clickedFull ? '1px solid black' : 'none'}}>
-                    <input type="text" disabled = {clickedFull} value= {value || 'not set'} onChange={(e)=>{setValue(e.target.value); setLoadingSave("Save Changes")}}/></div>
+                    <input type="text" disabled = {clickedFull} value= {value || altnames} onChange={(e)=>{setValue(e.target.value); setLoadingSave("Save Changes")}}/></div>
                 </div>
                 <div className="username card">
                     <h4>Username:</h4>
                     <div className="edit-con" style={{border: !clickedUser ? '1px solid black' : 'none'}}>
-                    <input type="text" disabled={clickedUser} value={valueUser || 'not set'} onChange={(e)=>{setValueUser(e.target.value); setLoadingSave("Save Changes")}}/>
+                    <input type="text" disabled={clickedUser} value={valueUser || altnames} onChange={(e)=>{setValueUser(e.target.value); setLoadingSave("Save Changes")}}/>
                     
                     </div>
                 </div>
