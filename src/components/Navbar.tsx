@@ -49,6 +49,13 @@ export function Navbar (){
           "photo-url": photoUrl
         });
        
+      } else{
+         const { username, fullName, photoUrl } = detail[0];
+        setDetails({
+          username: user?.displayName ?? '',
+          "full-name": user?.displayName ?? '',
+          "photo-url": user?.photoURL ?? ''
+        });
       }
 
       console.log(details?.["photo-url"])
@@ -77,7 +84,7 @@ export function Navbar (){
     
     
 
- }, [user?.uid])
+ }, [])
 
     return <div className="Navbar" onLoad={loadDetails}>
 
@@ -93,7 +100,7 @@ export function Navbar (){
         {user && 
         <div className="profile">
             <p onClick = {()=>{navigate(`/profile/${user?.uid}`)}}>{details?.username || user?.displayName}</p>
-            <img src ={downloadURL || user?.photoURL || null || undefined} width = "20" height = "20" alt="profile-pic" className="profile-img" onClick={()=>{navigate(`/profile/${user?.uid}`)}}/>
+            <img src ={downloadURL || "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png" || null || undefined} width = "20" height = "20" alt="profile-pic" className="profile-img" onClick={()=>{navigate(`/profile/${user?.uid}`)}}/>
             <button onClick ={signUserOut} className="logout" >LogOut</button>
         </div>
 

@@ -183,7 +183,7 @@ export function Profile (){
           {downloadURL ? (
             <img src ={downloadURL} alt="profile" className="profile-pic" />
           ) : (
-            <img src={user?.photoURL ?? ''} alt="profile" className="profile-pic" />
+            <img src={'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png'} alt="profile" className="profile-pic" />
           )}
           <div className='edit'><FaPen/></div>
           <input
