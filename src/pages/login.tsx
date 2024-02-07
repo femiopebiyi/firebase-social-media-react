@@ -18,6 +18,7 @@ export function Login (){
         try{
             signOut(auth);
             const res = await signInWithPopup(auth, provider)
+                
             console.log(res.user)
             const {displayName, email, photoURL, uid} = res.user
             navigate("/")

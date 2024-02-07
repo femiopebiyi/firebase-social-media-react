@@ -84,7 +84,7 @@ export function Navbar (){
     
     
 
- }, [])
+ }, [user?.uid])
 
     return <div className="Navbar" onLoad={loadDetails}>
 
