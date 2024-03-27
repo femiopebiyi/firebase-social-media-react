@@ -23,7 +23,7 @@ export function CreateForm (){
     const [user]= useAuthState(auth)
     const schema =yup.object().shape({
         title: yup.string().required('You must add a title').max(15, 'Title is 15 Char max'),
-        description: yup.string().required('add a descripition'),
+        description: yup.string().required('please add a descripition'),
     })
 
     const {register, handleSubmit, formState: {errors}, reset} = useForm<CreateFormData>({
