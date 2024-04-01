@@ -76,6 +76,7 @@ export function CreateForm (){
     <p>{errors.title?.message}</p>
 
         <textarea placeholder="Description" {...register("description")} className="post-des" onKeyUp ={(e)=>{
+            e.preventDefault()
             e.key === "Enter" && handleSubmit(onCreatePost)()
         }}/>
         <p>{errors.description?.message}</p>
