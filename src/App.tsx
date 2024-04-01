@@ -15,8 +15,7 @@ import { FaReact } from "react-icons/fa";
 function App() {
   const [user]= useAuthState(auth)
   return (
-    <div className="App">
-      <div className= 'logo'><FaReact /></div>
+    <div className="App" style={{backgroundColor: "antiquewhite"}}>
       <Router>
         <Navbar/>
         <Routes>
