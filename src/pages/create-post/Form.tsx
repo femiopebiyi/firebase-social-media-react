@@ -69,7 +69,7 @@ export function CreateForm (){
         
     }
 
-    return <div className="form"> 
+    return <div className="form" style={{height: "80vh"}}> 
     <form onSubmit={handleSubmit(onCreatePost)}>
         <input type="text" placeholder="Title..." {...register("title")} className="title"/>
 
