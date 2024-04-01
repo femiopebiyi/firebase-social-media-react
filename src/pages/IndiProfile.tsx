@@ -125,7 +125,7 @@ useEffect(()=>{
     return <div className="profile-con" onLoad={()=>{
       loadOtherNames()
       loadDetails()
-    }}>
+    }} style={{height: "80vh"}}>
         <main>
             <h1>Profile</h1>
 
