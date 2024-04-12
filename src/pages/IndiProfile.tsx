@@ -173,11 +173,7 @@ useEffect(()=>{
               setError("dont leave any input empty")
             } else if (valueUser.length < 3){
               setError("username should be more than 3 char")
-            } else if (valueUser.length > 8 ){
-              setError("username should be less than 8 char")
-            } else{
-              saveChanges()
-            }
+            
 
             
           
