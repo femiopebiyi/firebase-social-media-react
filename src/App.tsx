@@ -11,19 +11,28 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from './config/firebase';
 import { ProfileInd } from './pages/IndiProfile';
 import { FaReact } from "react-icons/fa";
+import { ProtectedRoute } from './components/ProtectedRoute';
 
 function App() {
   const [user]= useAuthState(auth)
   return (
-    <div className="App" style={{backgroundColor: "antiquewhite"}}>
+    <div className="App">
       <Router>
         <Navbar/>
         <Routes>
           <Route path='/' element={<Main/>}/>
           <Route path='/login' element={<Login/>}/>
-          <Route path='/createpost' element={<CreatePost/>}/>
-          <Route path= {`/profile/${user?.uid}`} element={<Profile/>}/>
-          <Route path= '/:userId' element={<ProfileInd/>}/>
+          <Route path='/createpost' element={
+            <ProtectedRoute>
+              <CreatePost/>
+            </ProtectedRoute>
+          }/>
+          <Route path={`/profile/${user?.uid}`} element={
+            <ProtectedRoute>
+              <Profile/>
+            </ProtectedRoute>
+          }/>
+          <Route path='/:userId' element={<ProfileInd/>}/>
         </Routes>
       </Router>
     </div>

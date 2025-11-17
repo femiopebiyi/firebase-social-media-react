@@ -1,12 +1,12 @@
-import {useForm} from "react-hook-form"
+import { useForm } from "react-hook-form"
 import * as yup from 'yup'
-import {yupResolver} from '@hookform/resolvers/yup'
-import { addDoc, collection, serverTimestamp} from "firebase/firestore";
- import { auth, database } from "../../config/firebase";
+import { yupResolver } from '@hookform/resolvers/yup'
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { auth, database } from "../../config/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import { IoSparkles } from "react-icons/io5";
 
 
 type CreateFormData = {
@@ -14,76 +14,77 @@ type CreateFormData = {
     description: string
 }
 
-export function CreateForm (){
+export function CreateForm() {
     const navigate = useNavigate()
-    let [sucess, setSucess] = useState("")
-    let [button, setButton] = useState("Post")
+    const [success, setSuccess] = useState("")
+    const [error, setError] = useState("")
+    const [button, setButton] = useState("Publish Post")
 
 
-    const [user]= useAuthState(auth)
-    const schema =yup.object().shape({
-        title: yup.string().required('You must add a title').max(15, 'Title is 15 Char max'),
-        description: yup.string().required('please add a descripition'),
+    const [user] = useAuthState(auth)
+    const schema = yup.object().shape({
+        title: yup.string().required('You must add a title').max(50, 'Title is 50 characters max'),
+        description: yup.string().required('Please add a description'),
     })
 
-    const {register, handleSubmit, formState: {errors}, reset} = useForm<CreateFormData>({
+    const { register, handleSubmit, formState: { errors }, reset } = useForm<CreateFormData>({
         resolver: yupResolver(schema)
     })
 
 
     const colRef = collection(database, "posts")
 
-    async function onCreatePost(data: CreateFormData){
-        try{
-            setButton("Posting....")
-        console.log(data)
-        await addDoc(colRef, {
-            title: data.title,
-            description: data.description,
-            username: user?.displayName,
-            userId: user?.uid,
-            time: serverTimestamp()
-        }).then(()=>{
-            setButton("Post")
-            setSucess("Post Sucessful ✅")
-        setTimeout(() => {
-            setSucess("")
-        }, 2000);
+    async function onCreatePost(data: CreateFormData) {
+        try {
+            setButton("Publishing....")
+            setError("")
+            setSuccess("")
+            
+            await addDoc(colRef, {
+                title: data.title,
+                description: data.description,
+                username: user?.displayName,
+                userId: user?.uid,
+                time: serverTimestamp()
+            })
+            
+            setButton("Publish Post")
+            setSuccess("Post Published Successfully! ✨")
             reset()
-        }).then(()=>{
-            navigate('/')
-        })
-        .catch((error)=>{
-            console.log("fff", error)
-        })
+            
+            setTimeout(() => {
+                navigate('/')
+            }, 1500);
 
-        } catch(err: unknown){
-
-            if(typeof err === "object"){
-                console.log(err)
-            }
+        } catch (err: unknown) {
+            console.error('Error creating post:', err)
+            setButton("Publish Post")
+            setError("Failed to publish post. Please try again.")
+            setTimeout(() => {
+                setError("")
+            }, 3000);
         }
-        
-
-
-        
     }
 
-    return <div className="form" style={{height: "80vh"}}> 
-    <form onSubmit={handleSubmit(onCreatePost)}>
-        <input type="text" placeholder="Title..." {...register("title")} className="title"/>
+    return <div className="form">
+        <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+            <h1 style={{ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
+                <IoSparkles style={{ color: '#667eea' }} /> Create New Post
+            </h1>
+            <p style={{ color: '#b4b4b4' }}>Share your thoughts with the world</p>
+        </div>
 
-    <p>{errors.title?.message}</p>
+        <form onSubmit={handleSubmit(onCreatePost)}>
+            <input type="text" placeholder="Give your post a catchy title..." {...register("title")} className="title" />
+            {errors.title && <p>{errors.title?.message}</p>}
 
-        <textarea placeholder="Description" {...register("description")} className="post-des" onKeyUp ={(e)=>{
-            e.preventDefault()
-            e.key === "Enter" && handleSubmit(onCreatePost)()
-        }}/>
-        <p>{errors.description?.message}</p>
-        <input type="submit" className="submit" value={button}/>
-    </form>
+            <textarea placeholder="What's on your mind? Share your story..." {...register("description")} className="post-des" />
+            {errors.description && <p>{errors.description?.message}</p>}
 
+            <input type="submit" className="submit" value={button} disabled={button !== "Publish Post"} />
+        </form>
 
-    <h2 className="sucess">{sucess}</h2>
+        {success && <h2 className="sucess">{success}</h2>}
+        {error && <h2 style={{ color: '#ff3b30', textAlign: 'center', marginTop: '1rem' }}>{error}</h2>}
     </div>
 }

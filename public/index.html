@@ -1,6 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <script>
+      // Polyfill for Node 25 localStorage issue
+      if (typeof localStorage === 'undefined') {
+        window.localStorage = {
+          getItem: function() { return null; },
+          setItem: function() {},
+          removeItem: function() {},
+          clear: function() {}
+        };
+      }
+    </script>
     <meta charset="utf-8" />
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
